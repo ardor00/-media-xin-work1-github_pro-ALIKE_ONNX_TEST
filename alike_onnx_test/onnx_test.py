@@ -36,7 +36,7 @@ class ImageLoader(object):
 def mnn_mather(desc1, desc2):
     sim = desc1 @ desc2.transpose()
     sim[sim < 0.75] = 0
-    nn12 = np.argmax(sim, axis=1) #函数：numpy.argmax(array, axis) array：代表输入数组；axis：代表对array取行（axis=0）或列（axis=1）的最大值
+    nn12 = np.argmax(sim, axis=1)
     nn21 = np.argmax(sim, axis=0)
     ids1 = np.arange(0, sim.shape[0])
     mask = (ids1 == nn21[nn12])
@@ -319,18 +319,14 @@ def run(args):
         desc = output1['descriptors']
         kpts_ref = output2['keypoints']
         desc_ref = output2['descriptors']
-
         scores1 = output1['scores']
         scores2 = output2['scores']
-
-
         # try:
         #     matches = mnn_mather(desc, desc_ref)
         # except:
         #     continue
         end2 = time.time()
         img_name = os.path.basename(img_name)
-
         #判断是使用单向匹配还是双向匹配
         if args.match_model == 'mnn':
             try:
@@ -347,8 +343,6 @@ def run(args):
         #vis_img, points_out, count_match = double_match(img_name,img, img2, kpts, kpts_ref, scores1, scores2, desc, desc_ref,args.match_point_write_dir)
         cv2.namedWindow(args.model)
         match_info(vis_img, points_out, count_match, kpts, kpts_ref,args.match_model)#
-
-
         cv2.imshow('points', points_out)
         cv2.imshow(args.model, vis_img)
         end = time.time()
@@ -356,8 +350,6 @@ def run(args):
         net_matches_t = end2 - start1
         total_t = end - start
         print('Use match_model:', args.match_model, 'Processed image %d (net: %.3f FPS,net+matches: %.3f FPS, total: %.3f FPS).' % (i, net_t, net_matches_t, total_t))
-
-
         if len(sum_net_t) < 102:  # 剔除最后一张和第一张  计算100张图片的平均帧率
             sum_net_t.append(net_t)
             sum_net_matches_t.append(net_matches_t)
