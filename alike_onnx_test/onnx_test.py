@@ -275,11 +275,16 @@ def match_info(vis_img, points_out, count_match, kpts, kpts_ref, match_model):
                 cv2.LINE_AA)  # 显示右图的特征点数目
 
     cv2.putText(points_out, str(len(kpts)),
-                (points_out.shape[1] - 150, points_out.shape[0] - 50),
-                cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 255), 2)  # 显示特征点数目
+                (int(vis_img.shape[1] / 2) - 100, vis_img.shape[0] - 50),
+                cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)  # 显示特征点数目
+
+    cv2.putText(points_out, str(len(kpts_ref)),
+                (vis_img.shape[1] - 100, vis_img.shape[0] - 50),
+                cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)  # 显示特征点数目
 
     print('左图的特征点数目:' + str(len(kpts)) + ' 右图的特征点数目:' + str(len(kpts_ref)) + ' 匹配数量:' + str(
         count_match))
+
 
 
 
