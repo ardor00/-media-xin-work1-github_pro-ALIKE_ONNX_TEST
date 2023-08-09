@@ -10,6 +10,7 @@ from copy import deepcopy
 import cv2
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 from onnxmodel import ONNXModel
 from soft_detect import DKD
@@ -149,6 +150,7 @@ def double_match(img_name,img1, img2,pts1, pts2, scores1, scores2, desc1, desc2,
 
     # rows, cols = img1.shape
     bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
+    # bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=False)
     matches = bf.match(desc1, desc2)
 
     out1, green1 = plot_keypoints(img1, pts1, scores1, radius, color)
@@ -223,6 +225,8 @@ def post_deal(W,H,scores_map, descriptor_map,radius=2,top_k=2000, scores_th=0.2,
 def pre_deal_np(img,flg=False):
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     image = img_rgb.transpose(2, 0, 1)[None] / 255.0
+    # img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    # image = img_rgb.transpose(2, 0, 1)[None]
     b, c, h, w = image.shape
     h_ = math.ceil(h / 8) * 8 if h % 8 != 0 else h
     w_ = math.ceil(w / 8) * 8 if w % 8 != 0 else w
@@ -433,6 +437,5 @@ def GetArgs():
 
 if __name__ == '__main__':
     args = GetArgs()
-    # 模型测试
     run(args)
 
