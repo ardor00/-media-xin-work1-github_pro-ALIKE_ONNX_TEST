@@ -338,7 +338,7 @@ def run(args):
         end2 = time.time()
         img_name = os.path.basename(img_name)
 
-        #判断是使用单向匹配还是双向匹配
+        #判断是使用点积匹配还是opencv双向匹配
         if args.match_model == 'mnn':
             try:
                 matches = mnn_mather(desc, desc_ref)
